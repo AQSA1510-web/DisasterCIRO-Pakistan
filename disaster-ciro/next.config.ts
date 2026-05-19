@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/backend/:path*',
-        destination: 'http://127.0.0.1:8000/:path*',
+        destination: 'https://disasterciro-backend-1080890664486.us-central1.run.app/:path*',
       },
     ];
   },
