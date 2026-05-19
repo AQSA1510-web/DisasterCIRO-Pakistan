@@ -1,0 +1,489 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --red: #ff1a1a;
+  --red-dim: #ff1a1a22;
+  --red-glow: #ff1a1a66;
+  --green: #00ff88;
+  --green-dim: #00ff8815;
+  --amber: #ffaa00;
+  --bg: #080808;
+  --bg-card: #0e0e0e;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #080808;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff1a1a66;
+  border-radius: 2px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ovalPulse {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.04);
+    opacity: 0.7;
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes agentPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px #ff1a1a22;
+  }
+
+  50% {
+    box-shadow: 0 0 32px #ff1a1a66;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.afu {
+  animation: fadeUp 0.7s ease both;
+}
+
+.afu1 {
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.afu2 {
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.afu3 {
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.afu4 {
+  animation: fadeUp 0.7s 0.4s ease both;
+}
+
+.aoval {
+  animation: ovalPulse 4s ease-in-out infinite;
+}
+
+.ablnk {
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.apls {
+  animation: agentPulse 1s ease-in-out infinite;
+}
+
+.asi {
+  animation: slideIn 0.4s ease both;
+}
+
+.chov {
+  transition: all 0.3s ease;
+}
+
+.chov:hover {
+  border-color: #ff1a1a44 !important;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(255, 26, 26, 0.08);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dashboard grid */
+.dg {
+  display: grid;
+  grid-template-columns: clamp(260px, 30vw, 320px) 1fr;
+  gap: 14px;
+  padding: 14px;
+  align-items: start;
+}
+
+@media(max-width:768px) {
+  .dg {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dg>div:last-child {
+    display: none;
+  }
+}
+
+@media(max-width:768px) {
+  .hm {
+    display: none !important;
+  }
+
+  .dg {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@keyframes borderSlide {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.agent-card {
+  position: relative;
+  background: #0e0e0e;
+  border-radius: 14px;
+  padding: 22px 18px;
+  isolation: isolate;
+}
+
+.agent-card::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, #ff1a1a 20deg, transparent 40deg);
+  animation: spinBorder 3s linear infinite;
+  z-index: -2;
+}
+
+.agent-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: #0a0a0a;
+  border-radius: 13px;
+  z-index: -1;
+}
+
+.agent-card>* {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes spinBorder {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.agent-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: conic-gradient(#ff1a1a 0deg, transparent 60deg, transparent 300deg, #ff1a1a 360deg);
+  animation: spinBorder 3s linear infinite;
+  z-index: 0;
+}
+
+.agent-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: #0e0e0e;
+  border-radius: 13px;
+  z-index: 1;
+}
+
+.agent-card>* {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes spinBorder {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── BEAM BORDER ANIMATION — Add to globals.css ── */
+
+@keyframes beamMove {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes beamMoveGreen {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Base beam border — applies to .gc, .sc, .ac, .ag-item */
+.gc,
+.sc,
+.ac {
+  position: relative;
+  isolation: isolate;
+}
+
+.gc::before,
+.sc::before,
+.ac::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 26, 26, 0.0) 10%,
+      rgba(255, 26, 26, 0.9) 30%,
+      rgba(255, 80, 20, 0.6) 50%,
+      rgba(255, 26, 26, 0.9) 70%,
+      rgba(255, 26, 26, 0.0) 90%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: beamMove 3s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Red variant — gc-r */
+.gc-r {
+  position: relative;
+  isolation: isolate;
+}
+
+.gc-r::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 26, 26, 0.0) 5%,
+      rgba(255, 26, 26, 1.0) 25%,
+      rgba(255, 60, 20, 0.7) 50%,
+      rgba(255, 26, 26, 1.0) 75%,
+      rgba(255, 26, 26, 0.0) 95%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: beamMove 2.5s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Green variant — gc-g */
+.gc-g {
+  position: relative;
+  isolation: isolate;
+}
+
+.gc-g::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(57, 255, 128, 0.0) 5%,
+      rgba(57, 255, 128, 0.9) 25%,
+      rgba(0, 255, 100, 0.6) 50%,
+      rgba(57, 255, 128, 0.9) 75%,
+      rgba(57, 255, 128, 0.0) 95%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: beamMoveGreen 2.5s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Make sure children sit above the beam */
+.gc>*,
+.gc-r>*,
+.gc-g>*,
+.sc>*,
+.ac>* {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes beamMove {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes spinBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes heroGlow {
+
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes floatOrb {
+
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  33% {
+    transform: translateY(-20px) translateX(10px);
+  }
+
+  66% {
+    transform: translateY(10px) translateX(-8px);
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    top: -2px;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes titlePulse {
+
+  0%,
+  100% {
+    text-shadow: 0 0 60px rgba(255, 26, 26, 0.5), 0 0 120px rgba(255, 26, 26, 0.2);
+  }
+
+  50% {
+    text-shadow: 0 0 80px rgba(255, 26, 26, 0.8), 0 0 160px rgba(255, 26, 26, 0.35);
+  }
+}
